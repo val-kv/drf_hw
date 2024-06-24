@@ -5,6 +5,7 @@ class Course(models.Model):
     name = models.CharField(max_length=100)
     preview = models.ImageField(upload_to='materials/media', null=True, blank=True)
     description = models.TextField()
+    lesson_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
