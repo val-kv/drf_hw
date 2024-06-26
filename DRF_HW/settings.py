@@ -79,6 +79,8 @@ WSGI_APPLICATION = 'DRF_HW.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
