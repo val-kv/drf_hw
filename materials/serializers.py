@@ -10,9 +10,8 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    name = serializers.ReadOnlyField(source='name')
     lesson_count = serializers.SerializerMethodField()
-    lessons = LessonSerializer(many=True)
+    lessons = LessonSerializer(many=True, read_only=True)
 
     def get_lesson_count(self, obj):
         return obj.lesson_set.count()
