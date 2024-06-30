@@ -1,4 +1,7 @@
+from django.contrib.auth.models import User
 from django.db import models
+
+from DRF_HW import settings
 
 
 class Course(models.Model):
@@ -6,6 +9,7 @@ class Course(models.Model):
     preview = models.ImageField(upload_to='materials/media', null=True, blank=True)
     description = models.TextField()
     lesson_count = models.IntegerField(default=0)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -21,6 +25,7 @@ class Lesson(models.Model):
     description = models.TextField()
     video = models.FileField(upload_to='materials/media', null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
