@@ -1,11 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework import viewsets, generics
-
-from users import serializers
 from users.models import Payments
 from users.serializers import UserSerializer, PaymentsSerializer
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 
 User = get_user_model()
 
@@ -46,4 +46,10 @@ class PaymentsListAPIView(generics.ListAPIView):
     ordering_fields = ['date']
 
 
-
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_payments(request):
+    user = request.user
+    payments = Payments.objects.filter(user=user)
+    serializer = PaymentsSerializer(payments, many=True)
+    return serializer

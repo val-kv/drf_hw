@@ -34,5 +34,3 @@ class Payments(models.Model):
         ('transfer', 'Перевод на счет'),
     ]
     payment_method = models.CharField(max_length=10, choices=PAYMENT_METHOD_CHOICES)
-
-
