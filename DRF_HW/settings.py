@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'materials',
     'django_filters'
     'rest_framework_simplejwt'
+    'django_filtersrest_framework_simplejwt'
+
 ]
 
 MIDDLEWARE = [
