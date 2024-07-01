@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from DRF_HW import settings
-
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
