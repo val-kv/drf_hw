@@ -5,7 +5,6 @@ from rest_framework.test import force_authenticate
 from rest_framework import status
 
 from materials.models import Course, Lesson, Subscribe
-from materials.serializers import LessonSerializer
 from materials.views import LessonViewSet, SubscribeView
 
 User = get_user_model()
@@ -24,6 +23,7 @@ class LessonViewSetTestCase(TestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_create_lesson(self):
+        """ Test that a lesson can be created. """
         course = Course.objects.create(name='Test Course', owner=self.user)
         data = {'name': 'Test Lesson', 'course': course.id}
         request = self.factory.post('/lessons/', data, format='json')
@@ -34,6 +34,7 @@ class LessonViewSetTestCase(TestCase):
         self.assertEqual(Lesson.objects.get().name, 'Test Lesson')
 
     def test_delete_lesson(self):
+        """ Test that a lesson can be deleted. """
         course = Course.objects.create(name='Test Course', owner=self.user)
         lesson = Lesson.objects.create(name='Test Lesson', course=course, owner=self.user)
         data = {'course': course.id, 'lesson': lesson.id}
@@ -53,6 +54,7 @@ class SubscribeViewTestCase(TestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_subscribe(self):
+        """ Test that a user can subscribe to a course. """
         course = Course.objects.create(name='Test Course', owner=self.user)
         data = {'course_id': course.id}
         request = self.factory.post('/subscribe/', data, format='json')
@@ -64,6 +66,7 @@ class SubscribeViewTestCase(TestCase):
         self.assertEqual(Subscribe.objects.get().course, course)
 
     def test_unsubscribe(self):
+        """ Test that a user can unsubscribe from a course. """
         course = Course.objects.create(name='Test Course', owner=self.user)
         Subscribe.objects.create(user=self.user, course=course)
         data = {'course_id': course.id}
