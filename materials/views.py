@@ -1,13 +1,17 @@
-from rest_framework import viewsets, generics
-from materials.models import Course, Lesson
+from rest_framework import viewsets, generics, status
+from materials.models import Course, Lesson, Subscribe
 from materials.serializers import CourseSerializer, LessonSerializer
+from .paginators import MaterialsPaginator
 from .permissions import IsModeratorPermission, IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    pagination_class = MaterialsPaginator
 
     def get_permissions(self):
         if self.action in ['create', 'destroy']:
@@ -27,6 +31,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    pagination_class = MaterialsPaginator
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
@@ -51,3 +56,20 @@ class LessonViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class SubscribeView(APIView):
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        course_id = request.data.get('course_id')
+        course = Course.objects.get_object_or_404(id=course_id)
+        subs_item = Subscribe.objects.filter(user=user, course=course)
+
+        if subs_item.exists():
+            subs_item.delete()
+            message = 'Подписка удалена'
+        else:
+            Subscribe.objects.create(user=user, course=course)
+            message = 'Подписка добавлена'
+
+        return Response({"message": message}, status=status.HTTP_200_OK)
