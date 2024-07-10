@@ -23,13 +23,15 @@ class LessonSerializer(serializers.ModelSerializer):
         validators = [validate_materials_link]
 
 
+def get_lesson_count(obj):
+    return obj.lesson_set.count()
+
+
 class CourseSerializer(serializers.ModelSerializer):
     lesson_count = serializers.SerializerMethodField(read_only=True)
     lessons = LessonSerializer(many=True, read_only=True)
     subscribe = SubscribeSerializer(many=True, read_only=True)
-    def get_lesson_count(self, obj):
-        return obj.lesson_set.count()
 
     class Meta:
         model = Course
-        fields = ['id', 'name', 'description', 'lesson_count', 'lessons']
+        fields = ['subscribe', 'lesson_count', 'lessons']

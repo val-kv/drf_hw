@@ -1,11 +1,15 @@
+from django.shortcuts import redirect, render
 from rest_framework import viewsets, generics, status
 from materials.models import Course, Lesson, Subscribe
 from materials.serializers import CourseSerializer, LessonSerializer
+from users.models import Payments
+from users.serializers import PaymentsSerializer
 from .paginators import MaterialsPaginator
 from .permissions import IsModeratorPermission, IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from payment_integration import create_checkout_session, create_product, create_price
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -73,3 +77,25 @@ class SubscribeView(APIView):
             message = 'Подписка добавлена'
 
         return Response({"message": message}, status=status.HTTP_200_OK)
+
+
+def get_user_payments(request):
+    user = request.user
+    payments = Payments.objects.filter(user=user)
+    serializer = PaymentsSerializer(payments, many=True)
+    return serializer
+
+
+def create_product_view(request):
+    product_id = create_product()
+    return render(request, 'product_created.html', {'product_id': product_id})
+
+
+def create_price_view(request, product_id):
+    price_id = create_price(product_id)
+    return render(request, 'price_created.html', {'price_id': price_id})
+
+
+def create_checkout_session_view(request, price_id):
+    checkout_session_url = create_checkout_session(price_id)
+    return render(request, 'checkout_session_created.html', {'checkout_session_url': checkout_session_url})
