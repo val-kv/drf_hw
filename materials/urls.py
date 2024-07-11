@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from materials import views, payment_integration
+from materials import payment_integration
 from materials.views import CourseViewSet, LessonCreateAPIView, LessonListAPIView, LessonRetrieveAPIView, \
     LessonUpdateAPIView, LessonDestroyAPIView, SubscribeView
 
@@ -17,9 +17,9 @@ urlpatterns = [
     path('lessons/update/<int:pk>/', LessonUpdateAPIView.as_view(), name='lesson_update'),
     path('lessons/delete/<int:pk>/', LessonDestroyAPIView.as_view(), name='lesson_delete'),
     path('subscribe/', SubscribeView.as_view(), name='subscribe'),
-    path('create_product/', views.create_product_view, name='create_product'),
-    path('create_price/<int:product_id>/', views.create_price_view, name='create_price'),
-    path('create_checkout_session/<int:price_id>/', views.create_checkout_session_view, name='create_checkout_session'),
+    path('create_product/', payment_integration.create_product, name='create_product'),
+    path('create_price/<int:product_id>/', payment_integration.create_price, name='create_price'),
+    path('create_checkout_session/<int:price_id>/', payment_integration.create_checkout_session, name='create_checkout_session'),
 ] + router.urls
 
 

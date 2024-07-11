@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from rest_framework import viewsets, generics, status
 from materials.models import Course, Lesson, Subscribe
 from materials.serializers import CourseSerializer, LessonSerializer
@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from payment_integration import create_checkout_session, create_product, create_price
+from materials.tasks import send_email_task
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -75,6 +76,13 @@ class SubscribeView(APIView):
         else:
             Subscribe.objects.create(user=user, course=course)
             message = 'Подписка добавлена'
+
+            # Send email to subscribed users
+            subject = f'Обновление курса: {course.name}'
+            message = f'Курс {course.name} был обновлен.'
+            from_email = 'your_email@example.com'
+            recipient_list = [sub.user.email for sub in Subscribe.objects.filter(course=course)]
+            send_email_task.delay(subject, message, from_email, recipient_list)
 
         return Response({"message": message}, status=status.HTTP_200_OK)
 

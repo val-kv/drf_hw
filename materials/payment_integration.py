@@ -8,10 +8,7 @@ headers = {
 
 def create_product():
     url = "https://api.stripe.com/v1/products"
-    headers = {
-        "Authorization": "sk_test_51Pb8vZRq60gSsgMSZx5eKNXImyF2PI88fBePn8QboDXm59knUj50lLyUa2DLyGxhUQ3brPp8AwFkTKeEYPOzWP71000WjLUtg6",
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
+
     data = {
         "name": "Course Product"
     }
