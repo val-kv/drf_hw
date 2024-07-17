@@ -9,7 +9,7 @@ from .permissions import IsModeratorPermission, IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from payment_integration import create_checkout_session, create_product, create_price
+from materials.payment_integration import create_checkout_session, create_product, create_price
 from materials.tasks import send_email_task
 
 

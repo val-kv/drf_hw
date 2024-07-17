@@ -1,12 +1,10 @@
+# DRF_HW\celery.py
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 
-# Установка переменной окружения для настроек проекта
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'drf_hw.settings')
-
-# Создание экземпляра объекта Celery
+# Set the timezone for Celery
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DRF_HW.settings')
 app = Celery('config')
-
-# Загрузка настроек из файла Django
 app.config_from_object('django.conf:settings', namespace='CELERY')
+app.conf.timezone = 'Australia/Tasmania'  # Set the timezone here
