@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
-import os
+
 import eventlet
+import os
 from celery import Celery
 
 eventlet.monkey_patch()
