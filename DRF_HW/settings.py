@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'celery',
     'django_celery_beat',
+    'schedule',
+    'eventlet',
 
 ]
 

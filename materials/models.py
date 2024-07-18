@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from DRF_HW.settings import AUTH_USER_MODEL
 from django.db import models
 
 
@@ -7,7 +7,7 @@ class Course(models.Model):
     preview = models.ImageField(upload_to='materials/media', null=True, blank=True)
     description = models.TextField()
     lesson_count = models.IntegerField(default=0)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -23,7 +23,7 @@ class Lesson(models.Model):
     description = models.TextField()
     video = models.FileField(upload_to='materials/media', null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -34,7 +34,7 @@ class Lesson(models.Model):
 
 
 class Subscribe(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     class Meta:
