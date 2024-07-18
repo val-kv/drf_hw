@@ -1,6 +1,9 @@
 from __future__ import absolute_import, unicode_literals
 import os
+import eventlet
 from celery import Celery
+
+eventlet.monkey_patch()
 
 # Set the timezone for Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DRF_HW.settings')
