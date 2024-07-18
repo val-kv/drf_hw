@@ -6,4 +6,4 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DRF_HW.settings')
 app = Celery('config')
 app.config_from_object('django.conf:settings', namespace='CELERY')
-app.conf.timezone = 'Australia/Tasmania'  # Set the timezone here
+app.conf.timezone = 'Europe/Kaliningrad'  # Часовой пояс для Celery
