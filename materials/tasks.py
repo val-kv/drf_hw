@@ -1,5 +1,5 @@
 from django.utils import timezone
-from django.contrib.auth.models import User
+from users.models import User
 from celery import shared_task
 from django.core.mail import send_mail
 
